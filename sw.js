@@ -1,10 +1,12 @@
+
 const CACHE_NAME = 'protocolo-treino-v1';
 const urlsToCache = [
-  './protocolo_treino.html',
-  './manifest.json'
+  './',
+  './index.html',
+  './manifest.json',
+  './image.png'
 ];
 
-// Instalar o service worker e cachear recursos
 self.addEventListener('install', function(event) {
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -15,22 +17,18 @@ self.addEventListener('install', function(event) {
   );
 });
 
-// Interceptar requisições e servir do cache quando offline
 self.addEventListener('fetch', function(event) {
   event.respondWith(
     caches.match(event.request)
       .then(function(response) {
-        // Cache hit - retorna a resposta
         if (response) {
           return response;
         }
         return fetch(event.request);
-      }
-    )
+      })
   );
 });
 
-// Atualizar o service worker
 self.addEventListener('activate', function(event) {
   event.waitUntil(
     caches.keys().then(function(cacheNames) {
@@ -44,4 +42,3 @@ self.addEventListener('activate', function(event) {
     })
   );
 });
-
